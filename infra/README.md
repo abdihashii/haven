@@ -168,38 +168,74 @@ Uncomment the `minio` service section in `docker-compose.yml`
 
 ## Production Deployment (Fly.io)
 
+### How Fly.io Deployment Works
+
+Fly.io has **two types of resources**:
+
+1. **Managed Services** (Database, Storage)
+   - Provisioned via CLI commands (`fly postgres create`, `fly storage create`)
+   - Fly.io manages everything - you just get credentials
+   - **No configuration files needed**
+
+2. **Your Applications** (API, Web, Dispatcher)
+   - Each app has its own `fly.toml` in its directory (`apps/api/fly.toml`)
+   - The `fly.toml` tells Fly.io how to build and run your code
+   - Deploy with `fly deploy`
+
 ### Service Architecture
 
-| Service | App Name | Purpose | Status |
-|---------|----------|---------|--------|
-| Database | `haven-db` | PostgreSQL | ✅ Ready to provision |
-| API | `haven-api` | NestJS Gateway | 🚧 Coming Soon |
-| Web | `haven-web` | TanStack Start Frontend | 🚧 Coming Soon |
-| Dispatcher | `haven-dispatcher` | Background Worker | 🚧 Coming Soon |
-| Storage | `haven-storage` | Tigris (S3) | 🚧 Coming Soon |
+| Service | App Name | Type | Provisioning | Status |
+|---------|----------|------|--------------|--------|
+| Database | `haven-db` | Managed | `fly postgres create` | ✅ Ready |
+| Storage | `haven-storage` | Managed | `fly storage create` | 🚧 Coming Soon |
+| API | `haven-api` | App | `fly deploy` (from apps/api/) | 🚧 Coming Soon |
+| Web | `haven-web` | App | `fly deploy` (from apps/web/) | 🚧 Coming Soon |
+| Dispatcher | `haven-dispatcher` | App | `fly deploy` (from apps/dispatcher/) | 🚧 Coming Soon |
 
 ### Deployment Order
 
-1. **Database First:**
+1. **Provision Database** (one-time setup):
    ```bash
    fly postgres create --name haven-db --region ord
    ```
+   Save the credentials output!
 
-2. **Storage Second:**
+2. **Provision Storage** (when needed):
    ```bash
    fly storage create --name haven-storage
    ```
 
-3. **Applications Third:**
-   - Deploy API first (connects to DB and NATS)
-   - Deploy Dispatcher (connects to DB and NATS)
-   - Deploy Web last (proxies to API)
+3. **Deploy Applications** (when built):
+   ```bash
+   # Each app deploys from its own directory
+   cd apps/api && fly launch        # First time: creates fly.toml
+   cd apps/api && fly deploy        # Subsequent deploys
+   ```
 
-Each application will have its own `fly.toml` in its app directory (`apps/api/fly.toml`, etc.).
+4. **Connect Apps to Database**:
+   ```bash
+   fly secrets set DATABASE_URL="postgres://..." -a haven-api
+   ```
 
-### Configuration Reference
+### Future App Configuration
 
-See `fly.toml` in this directory for detailed configuration for each service.
+When you create `apps/api/`, `apps/web/`, etc., each will have its own `fly.toml` that looks like:
+
+```toml
+# apps/api/fly.toml (example)
+app = "haven-api"
+primary_region = "ord"
+
+[build]
+dockerfile = "Dockerfile"
+
+[env]
+NODE_ENV = "production"
+
+[[services]]
+internal_port = 3000
+protocol = "tcp"
+```
 
 ---
 
