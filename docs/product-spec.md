@@ -19,14 +19,14 @@ Haven is an **Async Home Operating System**. It is the single source of truth fo
 ## 2. The Scope (SLC: Simple, Lovable, Complete)
 
 - Simple: We track Assets, Tasks, and Supplies. No complex depreciation math.
-- Lovable: The Onboarding pays for itself immediately ("The Home Depot Audit"). The UI is instant.
+- Lovable: The Onboarding pays for itself immediately ("The Hardware Store Audit"). The UI is instant.
 - Complete: The full loop exists: Capture -> Schedule -> Notify -> Resolve.
 
 ---
 
 ## 3. User Flows
 
-### A. The Onboarding Flow ("The Home Depot Audit")
+### A. The Onboarding Flow ("The Hardware Store Audit")
 
 We replace "Data Entry" with a "Safety & Supply Audit."
 
@@ -38,7 +38,7 @@ graph TD
     Step1 -->|Snap Photo| Shutoff[Main Water Shutoff]
     Step1 -->|Snap Photo| Breaker[Breaker Panel]
 
-    Shutoff --> Step2[Step 2: The Home Depot Cheat Sheet]
+    Shutoff --> Step2[Step 2: The Hardware Store Cheat Sheet]
     Step2 -->|Input| Filter[HVAC Filter Size]
     Step2 -->|Input| Fridge[Fridge Filter Type]
     Step2 -->|Input| Batt[Smoke Detector Battery]
@@ -132,13 +132,13 @@ erDiagram
 
 **Screen 1: The Onboarding (Step 2)**
 
-**Goal:** Solve the "Home Depot Amnesia" problem.
+**Goal:** Solve the "Hardware Store Amnesia" problem.
 
 ```plaintext
 +-------------------------------------------------------+
 |  < Back          Step 2 of 3                          |
 +-------------------------------------------------------+
-|  THE "HOME DEPOT" CHEAT SHEET                         |
+|  THE "HARDWARE STORE" CHEAT SHEET                      |
 |                                                       |
 |  Stop guessing at the store. Log your sizes now.      |
 |                                                       |
@@ -197,7 +197,7 @@ erDiagram
 |  CONSUMABLES (What to buy)                            |
 |  +-------------------------------------------------+  |
 |  | Filter: 20x25x4 MERV 11                         |  |
-|  | [ Buy on Amazon ]  [ Buy on HomeDepot ]         |  |
+|  | [ Buy on Amazon ]  [ Buy at Store ]              |  |
 |  +-------------------------------------------------+  |
 |  +-------------------------------------------------+  |
 |  | Flame Sensor: #SEN01114                         |  |
