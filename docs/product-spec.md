@@ -39,6 +39,7 @@ graph TD
     Step1 -->|Snap Photo| Breaker[Breaker Panel]
 
     Shutoff --> Step2[Step 2: The Hardware Store Cheat Sheet]
+    Breaker --> Step2
     Step2 -->|Input| Filter[HVAC Filter Size]
     Step2 -->|Input| Fridge[Fridge Filter Type]
     Step2 -->|Input| Batt[Smoke Detector Battery]
@@ -99,6 +100,7 @@ The data model is designed for multi-tenancy (You + Parents) and deep asset hist
 
 ```mermaid
 erDiagram
+    USER ||--o{ PROPERTY : owns
     PROPERTY ||--o{ ZONE : contains
     ZONE ||--o{ ASSET : contains
 
