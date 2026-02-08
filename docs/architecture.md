@@ -165,7 +165,7 @@ graph TD
 - **Flow:**
   1. User submits a capture (photo, audio, or text) to `apps/api`.
   2. `apps/api` saves blob to **Tigris** (via S3-compatible API).
-  3. `apps/api` creates `InboxItem` in **PostgreSQL** (Status: `PROCESSING`).
+  3. `apps/api` creates `InboxItem` in **PostgreSQL** (Status: `PENDING`).
   4. `apps/api` publishes event `asset.capture.created` to **NATS** (via TCP).
   5. `apps/dispatcher` receives event via NATS subscription.
   6. `apps/dispatcher` downloads the file from Tigris, runs AI processing (transcription for audio, analysis for images).
@@ -177,9 +177,8 @@ graph TD
 - **Flow:**
   1. `apps/dispatcher` runs a `@Cron()` job (e.g., every hour).
   2. Queries PostgreSQL for tasks where `next_due_at <= now()`.
-  3. Publishes `task.due` events to NATS for each due task.
-  4. Notification handler sends push/email to the user.
-  5. When user marks task done, `apps/api` logs it and resets `next_due_at`.
+  3. Sends push notification / email directly to the user for each due task.
+  4. When user marks task done, `apps/api` logs it and resets `next_due_at`.
 
 ---
 
@@ -254,6 +253,7 @@ erDiagram
     inbox_item {
         uuid id PK
         uuid user_id FK
+        text capture_type "PHOTO|AUDIO|TEXT"
         text status "PENDING|PROCESSING|PROCESSED"
         text storage_key
         text transcription
@@ -324,7 +324,7 @@ erDiagram
 
 ```plaintext
 # Start infrastructure
-docker compose up -d    # Postgres + NATS + MinIO (S3-compatible)
+docker compose -f infra/docker-compose.yml up -d    # Postgres + NATS + MinIO (S3-compatible)
 
 # Start services
 pnpm --filter api dev         # NestJS API on :3000
