@@ -351,3 +351,27 @@ pnpm --filter web dev         # TanStack Start on :3001 (proxies to :3000)
 - MinIO on `localhost:9000` (local S3 replacement for Tigris)
 
 The TanStack Start dev server proxies API requests to `localhost:3000`.
+
+---
+
+## 11. Versioning (Changesets)
+
+We use **@changesets/cli** to automate SemVer versioning across the monorepo.
+
+**Developer workflow:**
+
+1. After making changes, run `pnpm changeset`.
+2. Select which package(s) changed and the bump type (major / minor / patch).
+3. Write a short summary — this becomes the changelog entry.
+4. Commit the generated `.changeset/*.md` file alongside your code.
+
+**CI workflow (GitHub Action):**
+
+1. The **changesets/action** GitHub Action detects accumulated changeset files on `main`.
+2. It opens a **"Version Packages"** PR that:
+   - Bumps `version` in each affected `package.json`.
+   - Generates / updates `CHANGELOG.md` per package.
+   - Deletes consumed changeset files.
+3. Merging that PR applies the version bumps to `main`.
+
+**Dependency cascading:** When a shared package (e.g., `packages/shared`) is bumped, Changesets automatically bumps all consuming apps (`apps/api`, `apps/dispatcher`, etc.) that depend on it.
