@@ -19,12 +19,12 @@ Haven is an **Async Home Operating System**. It is the single source of truth fo
 ## 2. The Scope (SLC: Simple, Lovable, Complete)
 
 - Simple: We track Assets, Tasks, and Supplies. No complex depreciation math.
-- Lovable: The Onboarding pays for itself immediately ("The Home Depot Audit"). The UI is instant (Edge-cached).
+- Lovable: The Onboarding pays for itself immediately ("The Home Depot Audit"). The UI is instant.
 - Complete: The full loop exists: Capture -> Schedule -> Notify -> Resolve.
 
 ---
 
-## 3. User Flows & Architecture
+## 3. User Flows
 
 ### A. The Onboarding Flow ("The Home Depot Audit")
 
@@ -57,22 +57,21 @@ You see an issue. You don't have time to fix it. You capture it.
 sequenceDiagram
     autonumber
     actor U as Homeowner
-    participant FE as App (PWA)
-    participant G as Edge API (Cloudflare)
-    participant DB as Database
+    participant App as Haven App
+    participant Backend as Backend
 
-    U->>FE: Tap giant "+" Button
-    FE->>U: Prompt: "Photo, Voice, or Text?"
-    U->>FE: Records Audio: "Dryer making scraping noise"
+    U->>App: Tap giant "+" Button
+    App->>U: Prompt: "Photo, Voice, or Text?"
+    U->>App: Snaps photo of cracked caulk around tub
 
-    FE->>G: POST /capture (Audio Blob)
-    G->>DB: Create 'Inbox Item' (Status: Untriaged)
+    App->>Backend: Submit Capture (Photo)
+    Backend->>Backend: Create Inbox Item (Status: Untriaged)
 
-    note right of DB: Later...
+    note right of Backend: Later...
 
-    U->>FE: Review Inbox
-    FE->>U: Play Audio
-    U->>FE: Convert to Task -> Link to 'Dryer' Asset
+    U->>App: Review Inbox
+    App->>U: View Photo
+    U->>App: Convert to Task -> Link to 'Bathtub' Asset
 ```
 
 ### C. The Maintenance Loop (Automated)
@@ -81,24 +80,22 @@ The system reminds you to do the work.
 
 ```mermaid
 sequenceDiagram
-    participant C as Cron Service (Fly.io)
-    participant N as NATS
+    participant S as Reminder System
     participant U as User
-    participant A as Asset Service
+    participant App as Haven App
 
-    C->>N: Publish "task.due" (Payload: Filter Change)
-    N->>U: Push Notification: "HVAC Filter Due"
+    S->>U: Notification: "HVAC Filter Due"
 
     U->>U: Buys Filter (using App for size) & Installs
-    U->>A: Click "Mark Done"
-    A->>A: Log History & Reset Due Date (+90 Days)
+    U->>App: Click "Mark Done"
+    App->>App: Log History & Reset Due Date (+90 Days)
 ```
 
 ---
 
-## 4. Data Model (ERD)
+## 4. Data Model (Conceptual)
 
-The schema is designed for multi-tenancy (You + Parents) and deep asset history.
+The data model is designed for multi-tenancy (You + Parents) and deep asset history.
 
 ```mermaid
 erDiagram
@@ -113,23 +110,19 @@ erDiagram
     INBOX_ITEM }|--|| USER : captured_by
 
     ASSET {
-        string id PK
         string name "Trane Furnace"
-        jsonb metadata "{ model: 'XC95', serial: '...' }"
+        json metadata "model, serial, etc."
     }
 
     SUPPLY {
-        string id PK
         string name "Filter 20x25x4"
-        string link "amazon.com/..."
-        string asset_id FK
+        string purchase_link "amazon.com/..."
     }
 
     TASK {
-        string id PK
         string name "Replace Filter"
-        string cron "0 0 1 */3 *"
         date next_due_at
+        string recurrence "Every 3 months"
     }
 ```
 
@@ -184,8 +177,8 @@ erDiagram
 |  🟢 HVAC System     🟢 Plumbing     🟡 Garage Door    |
 +-------------------------------------------------------+
 |  RECENT LOGS                                          |
-|  • Replaced Kitch. Faucet (You, Yesterday)            |
-|  • Added Salt (Dad, 2 days ago)                       |
+|  - Replaced Kitch. Faucet (You, Yesterday)            |
+|  - Added Salt (Dad, 2 days ago)                       |
 +-------------------------------------------------------+
 ```
 
@@ -198,7 +191,7 @@ erDiagram
 |  < Back             Asset Detail             [ Edit ] |
 +-------------------------------------------------------+
 |  Trane XC95 Furnace                                   |
-|  📍 Basement Utility Room                             |
+|  Location: Basement Utility Room                      |
 |  Status: 🟢 Operational                               |
 +-------------------------------------------------------+
 |  CONSUMABLES (What to buy)                            |
@@ -212,20 +205,7 @@ erDiagram
 |  +-------------------------------------------------+  |
 +-------------------------------------------------------+
 |  SERVICE HISTORY                                      |
-|  • Feb 2026: Filter Change (Regular Maint.)           |
-|  • Nov 2025: Cleaned Flame Sensor (Issue Fixed)       |
+|  - Feb 2026: Filter Change (Regular Maint.)           |
+|  - Nov 2025: Cleaned Flame Sensor (Issue Fixed)       |
 +-------------------------------------------------------+
 ```
-
----
-
-## 6. Technical Stack Reference
-
-- Monorepo: pnpm workspaces
-- Frontend: React + Vite + PWA (Deploy: Cloudflare Workers)
-- Edge Gateway: NestJS + Fastify (Deploy: Cloudflare Workers)
-- Message Bus: NATS JetStream (Deploy: Fly.io)
-- Worker Service: NestJS Microservice (Deploy: Fly.io)
-- Database: SQLite + TypeORM (Deploy: D1 Cloudflare)
-- Auth: Better Auth (Hybrid Cookie/Token)
-- Storage: Cloudflare R2 (for Audio/Photos)
