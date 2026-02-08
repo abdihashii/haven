@@ -15,5 +15,6 @@ pnpm install
 
 ## Docs
 
-- [Architecture](docs/architecture.md)
-- [Product Spec](docs/product-spec.md)
+- [Contributing Guide](docs/contributing.md) - How to contribute to the project
+- [Architecture](docs/architecture.md) - Technical architecture and system design
+- [Product Spec](docs/product-spec.md) - Product requirements and user flows
