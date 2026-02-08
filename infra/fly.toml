@@ -1,0 +1,60 @@
+# Fly.io Deployment Configuration for Haven
+# This file documents the deployment architecture for all Haven services on Fly.io
+# Each service (database, API, web, dispatcher) has its own section below
+
+# ============================================================================
+# DATABASE (PostgreSQL)
+# ============================================================================
+# Provisioned using: fly postgres create --name haven-db --region ord
+#
+# Configuration:
+# - App Name: haven-db
+# - Region: ord (Chicago)
+# - Database: haven_production
+# - Internal Connection: haven-db.internal:5432
+# - External Access: Via fly proxy (for migrations/admin)
+# - HA: Optional with --ha flag
+# - Backups: Automatic daily backups (7 days retention on free tier)
+#
+# Connecting from apps:
+# Set DATABASE_URL secret: postgres://user:pass@haven-db.internal:5432/haven_production
+
+# ============================================================================
+# API (NestJS Gateway) - Coming Soon
+# ============================================================================
+# [future: haven-api app configuration]
+# Primary backend service handling HTTP requests
+# - Internal network access to database and NATS
+# - Exposes REST API to web frontend
+
+# ============================================================================
+# WEB (TanStack Start Frontend) - Coming Soon
+# ============================================================================
+# [future: haven-web app configuration]
+# SSR React frontend
+# - Communicates with API over internal network
+# - Public HTTPS endpoint for users
+
+# ============================================================================
+# DISPATCHER (Background Worker) - Coming Soon
+# ============================================================================
+# [future: haven-dispatcher app configuration]
+# Headless NestJS microservice for background jobs
+# - Subscribes to NATS events
+# - Runs scheduled cron jobs
+# - No HTTP server (internal only)
+
+# ============================================================================
+# NATS (Message Queue) - Coming Soon
+# ============================================================================
+# [future: nats deployment or Fly.io Upstash alternative]
+# Event bus for async processing
+# - Internal communication between API and dispatcher
+
+# ============================================================================
+# STORAGE (Tigris S3) - Coming Soon
+# ============================================================================
+# Provisioned using: fly storage create
+# S3-compatible object storage for file uploads
+# - Credentials auto-injected to Fly apps
+# - Used for photos, documents, captures

@@ -12,7 +12,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "infra:up": "docker compose -f infra/docker-compose.yml up -d",
+    "infra:down": "docker compose -f infra/docker-compose.yml down",
+    "infra:logs": "docker compose -f infra/docker-compose.yml logs -f",
+    "db:up": "docker compose -f infra/docker-compose.yml up -d postgres",
+    "db:down": "docker compose -f infra/docker-compose.yml down postgres",
+    "db:logs": "docker compose -f infra/docker-compose.yml logs -f postgres",
+    "db:shell": "docker compose -f infra/docker-compose.yml exec postgres psql -U haven -d haven_dev"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
