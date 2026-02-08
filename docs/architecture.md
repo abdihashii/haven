@@ -152,6 +152,8 @@ graph TD
 
 > **Shared package rule:** Only code imported by 2+ apps belongs in a shared package. Single-consumer code stays in its own app.
 >
+> **Shared dependency rule:** Dependencies used by 2+ packages are installed at the monorepo root `package.json` (e.g., `zod`, `date-fns`). Single-consumer dependencies stay in the package that uses them.
+>
 > **DTO strategy:** Zod schemas in `packages/shared/validators` are the single source of truth for request shapes — TypeScript types are inferred via `z.infer<>`. API response shapes are plain interfaces in `packages/shared/types`.
 
 ---
