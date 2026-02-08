@@ -18,9 +18,9 @@ Haven is an **Async Home Operating System**. It is the single source of truth fo
 
 ## 2. The Scope (SLC: Simple, Lovable, Complete)
 
-- Simple: We track Assets, Tasks, and Supplies. No complex depreciation math.
-- Lovable: The Onboarding pays for itself immediately ("The Hardware Store Audit"). The UI is instant.
-- Complete: The full loop exists: Capture -> Schedule -> Notify -> Resolve.
+- **Simple:** We track Assets, Tasks, and Supplies. No complex depreciation math.
+- **Lovable:** The Onboarding pays for itself immediately ("The Hardware Store Audit"). The UI is instant.
+- **Complete:** The full loop exists: Capture -> Schedule -> Notify -> Resolve.
 
 ---
 
