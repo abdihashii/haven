@@ -25,10 +25,10 @@ Commit this file with your changes.
 
 ### Root Package vs Workspace Packages
 
-**Root Package** (`haven` @ 0.0.1):
+**Root Package** (`haven` @ 0.0.0):
 
 - Just a monorepo container - **never gets versioned**
-- Stays at 0.0.1 indefinitely
+- Stays at 0.0.0 indefinitely
 - Marked `"private": true` (cannot be published)
 - Only contains workspace configuration and shared dev dependencies
 
@@ -57,7 +57,7 @@ Each workspace package versions **independently** based on changesets.
      - Deletes consumed changeset files
 
 3. **Merge Version PR** - Versions are committed to main
-   - **Only workspace packages get versioned** (root stays at 0.0.1)
+   - **Only workspace packages get versioned** (root stays at 0.0.0)
 
 ## Version-Only Mode
 
@@ -112,7 +112,7 @@ This message is **expected and harmless**. The changesets/action checks for a pu
 
 Versions only bump for **workspace packages**, not the root:
 
-- ❌ Root `package.json` stays at 0.0.1
+- ❌ Root `package.json` stays at 0.0.0
 - ✅ Workspace packages (apps/_, packages/_) bump according to changesets
 
 ### When Nothing Gets Versioned

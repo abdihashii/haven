@@ -374,7 +374,7 @@ We use **@changesets/cli** to automate SemVer versioning across the monorepo.
    - Deletes consumed changeset files.
 3. Merging that PR applies the version bumps to `main`.
 
-**Note:** Only workspace packages (apps/_, packages/_) get versioned. The root package.json stays at 0.0.1 as it's just a monorepo container, not a publishable package.
+**Note:** Only workspace packages (apps/_, packages/_) get versioned. The root package.json stays at 0.0.0 as it's just a monorepo container, not a publishable package.
 
 **Version-only mode:** This workflow is configured for version management only - packages are internal and not published to npm.
 
