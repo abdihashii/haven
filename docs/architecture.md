@@ -375,3 +375,17 @@ We use **@changesets/cli** to automate SemVer versioning across the monorepo.
 3. Merging that PR applies the version bumps to `main`.
 
 **Dependency cascading:** When a shared package (e.g., `packages/shared`) is bumped, Changesets automatically bumps all consuming apps (`apps/api`, `apps/dispatcher`, etc.) that depend on it.
+
+**CI enforcement:**
+
+Two GitHub Actions workflows enforce the changeset discipline:
+
+1. **Changeset Check** (`.github/workflows/changeset-check.yml`) — Runs on every PR to `main`. Executes `pnpm changeset status --since=origin/main` and fails the check if no changeset file is included.
+
+2. **Version Packages** (`.github/workflows/version-packages.yml`) — Runs on every push to `main`. Uses `changesets/action` to detect accumulated changeset files and open a "Version Packages" PR that bumps versions, updates changelogs, and deletes consumed changeset files.
+
+**Pre-commit hooks (Husky):**
+
+We use **Husky** to manage git hooks. Running `pnpm install` automatically sets up hooks via the `prepare` lifecycle script.
+
+- **Pre-commit hook** (`.husky/pre-commit`) — Currently a no-op. Will be wired to `lint-staged` once ESLint and Prettier are configured.
