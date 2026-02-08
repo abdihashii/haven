@@ -77,6 +77,10 @@ pnpm db:shell
 - Password: `haven_dev_password`
 - Connection String: `postgresql://haven:haven_dev_password@localhost:5432/haven_dev`
 
+**For .env files:**
+```bash
+DATABASE_URL=postgresql://haven:haven_dev_password@localhost:5432/haven_dev
+
 ### Production (Fly.io Postgres)
 
 **Prerequisites:**
@@ -94,7 +98,7 @@ Options:
 - `--volume-size 10` - 10GB storage
 - `--initial-cluster-size 1` - Single instance (use `--ha` for HA)
 
-**⚠️ Save credentials immediately - shown only once!**
+**⚠️ Save credentials immediately!** Store in a password manager (1Password, LastPass) or encrypted notes. They are shown only once.
 
 **Connect from local machine (admin/migrations):**
 ```bash
