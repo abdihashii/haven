@@ -24,6 +24,9 @@
     "db:logs": "docker compose -f infra/docker-compose.yml logs -f postgres",
     "db:shell": "docker compose -f infra/docker-compose.yml exec postgres psql -U haven -d haven_dev || (echo '\nError: Database not running. Start with: pnpm db:up\n' && exit 1)"
   },
+  "dependencies": {
+    "zod": "^4.3.6"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
     "@haven/eslint-config": "workspace:*",
