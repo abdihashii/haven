@@ -10,7 +10,7 @@ services:
     environment:
       POSTGRES_DB: haven_dev
       POSTGRES_USER: haven
-      POSTGRES_PASSWORD: haven_dev_password
+      POSTGRES_PASSWORD: haven_dev_password # ⚠️ LOCAL DEV ONLY - Never use in production
     ports:
       - '5432:5432'
     volumes:
