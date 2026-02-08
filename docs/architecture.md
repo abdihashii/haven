@@ -139,7 +139,7 @@ graph TD
 │   │   ├── /events          # NATS subjects & event payload types (api + dispatcher)
 │   │   ├── /types           # Domain enums, API response interfaces (web + api + dispatcher)
 │   │   └── /validators      # Zod schemas for requests/forms (web + api)
-│   ├── /api-client          # Typed HTTP client for the Haven API
+│   ├── /api-client          # Typed HTTP client for the Haven API (web + future mobile)
 │   ├── /eslint-config       # Shared ESLint config (@antfu/eslint-config)
 │   └── /tsconfig            # Shared TypeScript compiler configs
 │
