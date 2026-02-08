@@ -140,6 +140,7 @@ graph TD
 │   │   ├── /types           # Domain enums, API response interfaces (web + api + dispatcher)
 │   │   └── /validators      # Zod schemas for requests/forms (web + api)
 │   ├── /api-client          # Typed HTTP client for the Haven API (web + future mobile)
+│   ├── /eslint-config       # Shared ESLint config (@antfu/eslint-config)
 │   └── /tsconfig            # Shared TypeScript compiler configs
 │
 ├── /infra
