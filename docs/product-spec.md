@@ -140,7 +140,7 @@ erDiagram
 +-------------------------------------------------------+
 |  < Back          Step 2 of 3                          |
 +-------------------------------------------------------+
-|  THE "HARDWARE STORE" CHEAT SHEET                      |
+|  THE "HARDWARE STORE" CHEAT SHEET                     |
 |                                                       |
 |  Stop guessing at the store. Log your sizes now.      |
 |                                                       |
@@ -176,7 +176,7 @@ erDiagram
 |                                                       |
 +-------------------------------------------------------+
 |  HOUSE HEALTH                                         |
-|  🟢 HVAC System     🟢 Plumbing     🟡 Garage Door    |
+|  🟢 HVAC System     🟢 Plumbing     🟡 Garage Door     |
 +-------------------------------------------------------+
 |  RECENT LOGS                                          |
 |  - Replaced Kitch. Faucet (You, Yesterday)            |
@@ -199,7 +199,7 @@ erDiagram
 |  CONSUMABLES (What to buy)                            |
 |  +-------------------------------------------------+  |
 |  | Filter: 20x25x4 MERV 11                         |  |
-|  | [ Buy on Amazon ]  [ Buy at Store ]              |  |
+|  | [ Buy on Amazon ]  [ Buy at Store ]             |  |
 |  +-------------------------------------------------+  |
 |  +-------------------------------------------------+  |
 |  | Flame Sensor: #SEN01114                         |  |
