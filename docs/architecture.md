@@ -380,7 +380,7 @@ We use **@changesets/cli** to automate SemVer versioning across the monorepo.
 
 Two GitHub Actions workflows enforce the changeset discipline:
 
-1. **Changeset Check** (`.github/workflows/changeset-check.yml`) — Runs on every PR to `main`. Executes `pnpm changeset status --since=origin/main` and fails the check if no changeset file is included.
+1. **Changeset Check** (`.github/workflows/changeset-check.yml`) — Runs on every PR to `main`. Executes `pnpm changeset status --since=origin/main` and fails the check if no changeset file is included. For PRs that don't need a changeset (e.g., chore, CI, or docs-only changes), add the `skip-changeset` label to bypass this check.
 
 2. **Version Packages** (`.github/workflows/version-packages.yml`) — Runs on every push to `main`. Uses `changesets/action` to detect accumulated changeset files and open a "Version Packages" PR that bumps versions, updates changelogs, and deletes consumed changeset files.
 
