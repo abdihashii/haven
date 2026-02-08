@@ -1,0 +1,57 @@
+# Haven Local Development Infrastructure
+# This file contains all services needed for local development
+# Add services incrementally as needed: PostgreSQL → NATS → MinIO
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16
+    container_name: haven-db
+    environment:
+      POSTGRES_DB: haven_dev
+      POSTGRES_USER: haven
+      POSTGRES_PASSWORD: haven_dev_password # ⚠️ LOCAL DEV ONLY - Never use in production
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U haven -d haven_dev]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # NATS JetStream (Message Queue) - Coming Soon
+  # Uncomment when ready to build event-driven features
+  # nats:
+  #   image: nats:latest
+  #   container_name: haven-nats
+  #   command: ["-js", "-sd", "/data"]
+  #   ports:
+  #     - "4222:4222"
+  #     - "8222:8222"
+  #   volumes:
+  #     - nats_data:/data
+  #   restart: unless-stopped
+
+  # MinIO (S3-compatible storage) - Coming Soon
+  # Uncomment when ready to build file upload features
+  # minio:
+  #   image: minio/minio:latest
+  #   container_name: haven-minio
+  #   command: server /data --console-address ":9001"
+  #   environment:
+  #     MINIO_ROOT_USER: haven
+  #     MINIO_ROOT_PASSWORD: haven_dev_password
+  #   ports:
+  #     - "9000:9000"
+  #     - "9001:9001"
+  #   volumes:
+  #     - minio_data:/data
+  #   restart: unless-stopped
+
+volumes:
+  postgres_data:
+  # nats_data:
+  # minio_data:
