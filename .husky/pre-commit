@@ -1,1 +1,1 @@
-# lint-staged will be added here once ESLint is configured
+pnpm exec lint-staged
