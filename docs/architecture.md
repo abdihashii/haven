@@ -130,12 +130,17 @@ graph TD
 ├── /apps
 │   ├── /web                 # TanStack Start (SSR React) -> Fly.io
 │   ├── /api                 # NestJS API Gateway -> Fly.io
+│   │   └── /migrations      # TypeORM migrations (run from api only)
 │   └── /dispatcher          # NestJS Microservice -> Fly.io
 │
 ├── /packages
-│   ├── /db                  # Shared TypeORM Entities & Migrations
-│   ├── /events              # Shared NATS Subjects & DTOs
-│   └── /tsconfig            # Shared TS Configs
+│   ├── /shared              # Shared runtime code (2+ app consumers)
+│   │   ├── /entities        # TypeORM entity classes (api + dispatcher)
+│   │   ├── /events          # NATS subjects & event payload types (api + dispatcher)
+│   │   ├── /types           # Domain enums, API response interfaces (web + api + dispatcher)
+│   │   └── /validators      # Zod schemas for requests/forms (web + api)
+│   ├── /api-client          # Typed HTTP client for the Haven API (web + future mobile)
+│   └── /tsconfig            # Shared TypeScript compiler configs
 │
 ├── /infra
 │   ├── docker-compose.yml   # Local dev: Postgres + NATS
@@ -144,6 +149,10 @@ graph TD
 ├── package.json
 └── pnpm-workspace.yaml
 ```
+
+> **Shared package rule:** Only code imported by 2+ apps belongs in a shared package. Single-consumer code stays in its own app.
+>
+> **DTO strategy:** Zod schemas in `packages/shared/validators` are the single source of truth for request shapes — TypeScript types are inferred via `z.infer<>`. API response shapes are plain interfaces in `packages/shared/types`.
 
 ---
 
@@ -184,7 +193,7 @@ graph TD
 
 ## 7. Database Schema (PostgreSQL)
 
-We use **TypeORM** for type safety, entities, and migrations.
+We use **TypeORM** for type safety, entities, and migrations. Entity classes live in `packages/shared/entities` (shared by api + dispatcher). Migrations live in `apps/api/migrations` (run from the API only).
 
 ```mermaid
 erDiagram
