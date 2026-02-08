@@ -1,0 +1,15 @@
+# GitHub Labels Configuration
+# Create these labels in your repository:
+# Settings > Issues > Labels
+
+- name: needs-changeset
+  color: d73a4a
+  description: PR needs a changeset before merging
+
+- name: skip-changeset
+  color: 0e8a16
+  description: PR does not require a changeset (chore/docs/CI)
+
+- name: has-changeset
+  color: 0075ca
+  description: PR includes a changeset

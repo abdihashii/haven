@@ -29,4 +29,49 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Check for changeset
+        id: changeset-check
+        continue-on-error: true
         run: pnpm changeset status --since=origin/main
+
+      - name: Comment on PR if changeset is missing
+        if: steps.changeset-check.outcome == 'failure'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## ⚠️ Missing Changeset
+
+            This PR modifies package code but doesn't include a changeset file.
+
+            ### What's a changeset?
+            Changesets help us track changes and automatically version packages. [Learn more](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md)
+
+            ### How to fix this
+
+            **Option 1: Add a changeset** (for features, fixes, breaking changes)
+            ```bash
+            pnpm changeset add
+            ```
+            Follow the prompts to:
+            1. Select which packages changed
+            2. Choose version bump type (patch/minor/major)
+            3. Write a summary of changes
+
+            **Option 2: Add an empty changeset** (for chores, docs, CI/CD)
+            ```bash
+            pnpm changeset add --empty
+            ```
+            Then edit `.changeset/*.md` to add a description.
+
+            **Option 3: Skip changeset requirement** (for non-code changes)
+            Add the `skip-changeset` label to this PR.
+
+            ---
+
+            💡 **Tip:** After adding a changeset, commit and push it to this PR.
+
+      - name: Fail if changeset is missing
+        if: steps.changeset-check.outcome == 'failure'
+        run: |
+          echo "❌ Changeset check failed. Please add a changeset or apply the 'skip-changeset' label."
+          exit 1
