@@ -388,4 +388,4 @@ Two GitHub Actions workflows enforce the changeset discipline:
 
 We use **Husky** to manage git hooks. Running `pnpm install` automatically sets up hooks via the `prepare` lifecycle script.
 
-- **Pre-commit hook** (`.husky/pre-commit`) — Currently a no-op. Will be wired to `lint-staged` once ESLint and Prettier are configured.
+- **Pre-commit hook** (`.husky/pre-commit`) — Runs `lint-staged` to lint and format staged files before each commit.
