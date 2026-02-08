@@ -10,6 +10,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "test:infra": "docker compose -f infra/docker-compose.yml up -d && docker compose -f infra/docker-compose.yml ps | grep -q 'healthy' && docker compose -f infra/docker-compose.yml down",
     "prepare": "husky",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
