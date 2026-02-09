@@ -15,6 +15,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "dev:api": "pnpm --filter @haven/api start:dev",
+    "deploy:api": "flyctl deploy --config apps/api/fly.toml --dockerfile apps/api/Dockerfile",
     "preinfra:up": "docker info > /dev/null 2>&1 || (echo '\nError: Docker is not running. Please start Docker Desktop and try again.\n' && exit 1)",
     "infra:up": "docker compose -f infra/docker-compose.yml up -d",
     "infra:down": "docker compose -f infra/docker-compose.yml down",
