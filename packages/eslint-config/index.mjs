@@ -117,6 +117,9 @@ export default function havenEslintConfig(options = {}, ...userConfigs) {
         // NestJS requires runtime class imports for dependency injection
         // Services, providers, etc. must be imported as values, not types
         'ts/consistent-type-imports': 'off',
+
+        // NestJS apps commonly use process.env for configuration
+        'node/prefer-global/process': 'off',
       },
     },
 
