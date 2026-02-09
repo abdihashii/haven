@@ -1,0 +1,17 @@
+node_modules
+dist
+coverage
+*.log
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+README.md
+*.md
+.prettierrc
+.eslintrc*
+tsconfig*.json
+test
+*.spec.ts
+*.test.ts
