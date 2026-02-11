@@ -6,6 +6,24 @@ import { AppModule } from './../src/app.module'
 import type { INestApplication } from '@nestjs/common'
 import type { TestingModule } from '@nestjs/testing'
 
+jest.mock('./../src/auth/auth', () => ({
+  auth: {},
+}))
+
+jest.mock('@thallesp/nestjs-better-auth', () => {
+  class MockAuthModule {}
+
+  return {
+    AuthModule: {
+      forRoot: () => ({
+        module: MockAuthModule,
+      }),
+    },
+    AllowAnonymous: () => () => {},
+    Session: () => () => {},
+  }
+})
+
 describe('AppController (e2e)', () => {
   let app: INestApplication
 
