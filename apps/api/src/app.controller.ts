@@ -1,20 +1,22 @@
 import { Controller, Get } from '@nestjs/common'
+import { AllowAnonymous, Session } from '@thallesp/nestjs-better-auth'
 
 import { AppService } from './app.service.js'
-import { CurrentUser, Public, Session } from './auth/decorators.js'
+
+import type { UserSession } from '@thallesp/nestjs-better-auth'
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Public()
+  @AllowAnonymous()
   @Get()
   getHello(): string {
     return this.appService.getHello()
   }
 
   @Get('protected')
-  getProtected(@Session() session: unknown, @CurrentUser() user: unknown) {
-    return { session, user }
+  getProtected(@Session() session: UserSession) {
+    return { session, user: session.user }
   }
 }

@@ -5,6 +5,11 @@ import { AppService } from './app.service'
 
 import type { TestingModule } from '@nestjs/testing'
 
+jest.mock('@thallesp/nestjs-better-auth', () => ({
+  AllowAnonymous: () => () => {},
+  Session: () => () => {},
+}))
+
 describe('appController', () => {
   let appController: AppController
 
@@ -19,7 +24,7 @@ describe('appController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!')
+      expect(appController.getHello()).toBe('Hello, World!')
     })
   })
 })
