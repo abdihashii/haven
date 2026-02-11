@@ -80,48 +80,55 @@ pnpm db:shell
 **For .env files:**
 ```bash
 DATABASE_URL=postgresql://haven:haven_dev_password@localhost:5432/haven_dev
+```
 
 ### Production (Fly.io Postgres)
+
+**App name:** `abdirahmanhaji-haven-db`
 
 **Prerequisites:**
 - [Fly CLI](https://fly.io/docs/hands-on/install-flyctl/) installed
 - Fly.io account authenticated (`fly auth login`)
 
-**Provision database:**
-```bash
-fly postgres create --name haven-db --region ord
-```
-
-Options:
-- `--region ord` - Chicago region (adjust to your location)
-- `--vm-size shared-cpu-1x` - Smallest VM (scale up as needed)
-- `--volume-size 10` - 10GB storage
-- `--initial-cluster-size 1` - Single instance (use `--ha` for HA)
-
-**⚠️ Save credentials immediately!** Store in a password manager (1Password, LastPass) or encrypted notes. They are shown only once.
-
-**Connect from local machine (admin/migrations):**
-```bash
-# Create proxy tunnel
-fly proxy 5433:5432 -a haven-db
-
-# Connect via psql
-psql postgresql://username:password@localhost:5433/haven_production
-```
-
-**Connect from Fly.io apps (internal network):**
-```bash
-# Set as secret in your app
-fly secrets set DATABASE_URL="postgresql://user:pass@haven-db.internal:5432/haven_production" -a your-app
-```
-
 **Management commands:**
 ```bash
-fly status -a haven-db                    # Check status
-fly logs -a haven-db                      # View logs
-fly postgres connect -a haven-db          # Direct console access
-fly postgres backup list -a haven-db      # List backups
-fly volumes extend vol_xxx -s 20 -a haven-db  # Scale storage
+fly status -a abdirahmanhaji-haven-db                    # Check status
+fly logs -a abdirahmanhaji-haven-db                      # View logs
+fly postgres backup list -a abdirahmanhaji-haven-db      # List backups
+```
+
+### Connecting with a GUI (TablePlus, pgAdmin, etc.)
+
+Use the Makefile targets to get connection details:
+
+| Command | Description |
+|---------|-------------|
+| `make haven-db-local` | Print local dev connection details |
+| `make haven-db-prod` | Open tunnel to prod on `localhost:15432` and print connection details |
+| `make haven-db-prod-shell` | Open psql directly on prod (no tunnel needed) |
+
+**Local dev:**
+```bash
+make haven-db-local
+# Prints host, port, user, password, database, URL — copy into your GUI
+```
+
+**Production:**
+```bash
+# Terminal 1: start the tunnel (keep running)
+make haven-db-prod
+
+# Terminal 2 / GUI: connect using the printed details
+# Host: localhost, Port: 15432
+```
+
+**Running migrations against prod:**
+```bash
+# Terminal 1: start the tunnel
+make haven-db-prod
+
+# Terminal 2: run migrations through the tunnel
+cd apps/api && DATABASE_URL="postgres://abdirahmanhaji_haven_api:<password>@localhost:15432/abdirahmanhaji_haven_api?sslmode=disable" npx @better-auth/cli migrate --yes
 ```
 
 ---
