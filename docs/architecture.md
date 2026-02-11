@@ -107,11 +107,11 @@ graph TD
 **API**
 
 - **Framework:** NestJS.
-- **Adapter:** `@nestjs/platform-fastify`.
+- **Adapter:** `@nestjs/platform-express`.
 - **Runtime:** Node.js on Fly.io.
 - **Database:** PostgreSQL (Fly Postgres).
 - **ORM:** TypeORM.
-- **Auth:** Better Auth (Sessions/Cookies via PostgreSQL adapter).
+- **Auth:** Better Auth via `@thallesp/nestjs-better-auth` (Sessions/Cookies via PostgreSQL adapter).
 - **Storage:** Tigris (Fly.io's S3-compatible object storage, via `@aws-sdk/client-s3`).
 
 **Background Infrastructure**
@@ -321,7 +321,8 @@ erDiagram
 
 3. **Better Auth + PostgreSQL:**
 
-- We use the **Better Auth TypeORM Adapter**.
+- We use **Better Auth** with the `@thallesp/nestjs-better-auth` NestJS integration library.
+- `AuthModule.forRoot({ auth })` registers a global guard and mounts auth routes automatically.
 - Session tokens are stored in PostgreSQL.
 - The frontend (TanStack Start) passes cookies; the API validates them against PostgreSQL.
 
