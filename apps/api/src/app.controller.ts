@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
 import { AllowAnonymous, Session } from '@thallesp/nestjs-better-auth'
 
-import { AppService } from './app.service.js'
+import { AppService } from './app.service'
 
 import type { UserSession } from '@thallesp/nestjs-better-auth'
 
